@@ -1,0 +1,31 @@
+<h2>Lista de Productos</h2>
+
+        <div *ngIf="loading$ | async">Cargando productos...</div>
+
+        <div *ngIf="error$ | async as error">Error: {{ error.message || 'Error al cargar productos.' }}</div>
+
+        <table *ngIf="(products$ | async) as products">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.nombre }}</td>
+                    <td>{{ product.descripcion }}</td>
+                    <td>{{ product.precio }}</td>
+                    <td>{{ product.categoria }}</td>
+                    <td>
+                        <button (click)="getProductDetails(product.id)">Ver Detalles</button>
+                        <button (click)="deleteProduct(product.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>

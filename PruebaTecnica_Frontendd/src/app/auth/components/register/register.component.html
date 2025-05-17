@@ -1,0 +1,39 @@
+<main>
+    <section>
+        <h2>Registro</h2>
+
+        <div *ngIf="error$ | async as error" class="error-message">
+            {{ error || 'Error al registrar.' }}
+        </div>
+
+        <div *ngIf="registerSuccessMessage$ | async as message" class="success-message">
+            {{ message }}
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" formControlName="username" class="form-control">
+                <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+                    class="error-message">
+                    Por favor, ingresa un nombre de usuario.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" formControlName="password" class="form-control">
+                <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                    class="error-message">
+                    La contraseña es obligatoria y debe tener al menos 6 caracteres.
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="loading$ | async" class="btn btn-primary">
+                <span *ngIf="loading$ | async">Cargando...</span>
+                <span *ngIf="!(loading$ | async)">Registrar</span>
+            </button>
+        </form>
+
+        <p>¿Ya tienes una cuenta? <a href="#" (click)="navigateToLogin()">Inicia Sesión</a></p>
+    </section>
+</main>

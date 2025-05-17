@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "TestJwt",
+            "request": "launch",
+            "mainClass": "com.croper.model.TestJwt",
+            "projectName": "croper"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CroperApplication<croper>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.croper.CroperApplication",
+            "projectName": "croper",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=55887 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=croper"
+        }
+    ]
+}
