@@ -1,7 +1,8 @@
+// product.model.ts
 export interface Product {
-    id: number;
-    nombre: string;
-    descripcion: string;
-    precio: number;
-    categoria: string;
+    id?: number;
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
 }

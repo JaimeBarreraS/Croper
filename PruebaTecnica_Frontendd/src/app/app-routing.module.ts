@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ProductListComponent } from './products/components/product-list/product-list.component';
 
 const routes: Routes = [
-  //  Aquí definiremos nuestras rutas más adelante
-  //  Por ejemplo:
-  //  { path: 'login', component: LoginComponent },
-  //  { path: 'products', component: ProductListComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, //  Ruta por defecto
-  { path: '**', redirectTo: '/login' } //  Ruta para cualquier otra ruta no definida
+  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: 'products', component: ProductListComponent },
+  { path: '**', redirectTo: '/products' }
 ];
 
 @NgModule({

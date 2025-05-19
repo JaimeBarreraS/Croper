@@ -1,35 +1,36 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module'; //  Importa el módulo de enrutamiento
-
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools'; //  Importa la configuración del entorno
-import { AuthModule } from './auth/auth.module';
-import { AuthInterceptor } from './auth/auth.interceptor';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { AppComponent } from './app.component'; // Importa AppComponent (necesario para main.ts)
+import { ProductEffects } from './products/store/product.effects';
+import { productReducer } from './products/store/product.reducer';
+import { ProductListComponent } from './products/components/product-list/product-list.component';
 
 @NgModule({
+    declarations: [
+        AppComponent,
+        ProductListComponent
+    ],
     imports: [
         BrowserModule,
-        AppRoutingModule,   //  Agrega el módulo de enrutamiento a los imports
+        AppRoutingModule,
         HttpClientModule,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
+        ReactiveFormsModule,
+        StoreModule.forRoot({ products: productReducer }),
+        EffectsModule.forRoot([ProductEffects]),
         StoreDevtoolsModule.instrument({
-            maxAge: 25,
-            logOnly: environment.production
-        }),
-        AuthModule
+            maxAge: 25, // Retiene las últimas 25 acciones
+            logOnly: environment.production, // Restricción para prod
+        })
     ],
-    providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-    ],
-    // declarations: [   <--- Elimina esta línea o el array dentro si solo contiene AppComponent
-    //     AppComponent
-    // ],
-    // bootstrap: [AppComponent]  <--- Elimina esta línea
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
