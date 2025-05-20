@@ -1,9 +1,9 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
     providers: [
-        provideRouter([]) // Add your routes here
+        provideHttpClient(withFetch())  // Aquí es donde activas fetch()
     ]
-}).catch(err => console.error(err));
+});

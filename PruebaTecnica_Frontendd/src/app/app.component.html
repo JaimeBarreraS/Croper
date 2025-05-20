@@ -1,2 +1,154 @@
+<div class="container">
+    <h1 class="app-title">{{ title }}</h1>
 
-  
+    <!-- Mensajes de alerta -->
+    <div *ngIf="error" class="alert alert-danger">
+        <span>{{ error }}</span>
+        <button (click)="error = ''" class="close-btn">&times;</button>
+    </div>
+
+    <div *ngIf="success" class="alert alert-success">
+        <span>{{ success }}</span>
+        <button (click)="success = ''" class="close-btn">&times;</button>
+    </div>
+
+    <!-- Spinner de carga -->
+    <div *ngIf="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+    <!-- Botón para crear un nuevo producto -->
+    <div class="actions-container" *ngIf="!showForm">
+        <button class="btn btn-primary" (click)="openCreateForm()">
+            <i class="fas fa-plus"></i> Nuevo Producto
+        </button>
+    </div>
+
+    <!-- Formulario de producto -->
+    <div class="form-container" *ngIf="showForm">
+        <div class="card">
+            <div class="card-header">
+                <h2>{{ isEditing ? 'Editar Producto' : 'Crear Nuevo Producto' }}</h2>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+                    <input type="hidden" formControlName="id">
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                            [ngClass]="{'invalid': productForm.get('nombre')?.invalid && productForm.get('nombre')?.touched}">
+                        <div class="error-message"
+                            *ngIf="productForm.get('nombre')?.invalid && productForm.get('nombre')?.touched">
+                            <span *ngIf="productForm.get('nombre')?.hasError('required')">El nombre es requerido</span>
+                            <span *ngIf="productForm.get('nombre')?.hasError('minlength')">El nombre debe tener al menos
+                                3 caracteres</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" formControlName="descripcion" class="form-control"
+                            [ngClass]="{'invalid': productForm.get('descripcion')?.invalid && productForm.get('descripcion')?.touched}">
+            </textarea>
+                        <div class="error-message"
+                            *ngIf="productForm.get('descripcion')?.invalid && productForm.get('descripcion')?.touched">
+                            <span *ngIf="productForm.get('descripcion')?.hasError('required')">La descripción es
+                                requerida</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" formControlName="precio" class="form-control"
+                            [ngClass]="{'invalid': productForm.get('precio')?.invalid && productForm.get('precio')?.touched}">
+                        <div class="error-message"
+                            *ngIf="productForm.get('precio')?.invalid && productForm.get('precio')?.touched">
+                            <span *ngIf="productForm.get('precio')?.hasError('required')">El precio es requerido</span>
+                            <span *ngIf="productForm.get('precio')?.hasError('min')">El precio debe ser mayor o igual a
+                                0</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria">Categoría:</label>
+                        <input type="text" id="categoria" formControlName="categoria" class="form-control"
+                            [ngClass]="{'invalid': productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched}">
+                        <div class="error-message"
+                            *ngIf="productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched">
+                            <span *ngIf="productForm.get('categoria')?.hasError('required')">La categoría es
+                                requerida</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success" [disabled]="productForm.invalid">
+                            {{ isEditing ? 'Actualizar' : 'Guardar' }}
+                        </button>
+                        <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="table-container" *ngIf="!showForm">
+        <div *ngIf="products.length === 0 && !loading" class="no-data">
+            <p>No hay productos disponibles</p>
+        </div>
+
+        <table *ngIf="products.length > 0" class="product-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.nombre }}</td>
+                    <td class="description-cell">{{ product.descripcion }}</td>
+                    <td>{{ product.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+                    <td>{{ product.categoria }}</td>
+                    <td class="actions-cell">
+                        <button class="btn btn-sm btn-info" (click)="openEditForm(product)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id!)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <div class="pagination-container" *ngIf="totalPages > 1">
+            <div class="pagination">
+                <button class="pagination-btn" [disabled]="currentPage === 0" (click)="prevPage()">
+                    &laquo;
+                </button>
+
+                <button *ngFor="let page of pages" class="pagination-btn" [class.active]="page === currentPage"
+                    (click)="goToPage(page)">
+                    {{ page + 1 }}
+                </button>
+
+                <button class="pagination-btn" [disabled]="currentPage === totalPages - 1" (click)="nextPage()">
+                    &raquo;
+                </button>
+            </div>
+
+            <div class="pagination-info">
+                Página {{ currentPage + 1 }} de {{ totalPages }} | Total: {{ totalElements }} productos
+            </div>
+        </div>
+    </div>
+</div>
