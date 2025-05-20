@@ -20,6 +20,7 @@ export class ProductService {
     }
     
 
+
     getProductById(id: number): Observable<ApiResponse<Product>> {
         return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${id}`)
             .pipe(catchError(this.handleError));

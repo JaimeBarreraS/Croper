@@ -112,7 +112,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of products">
+                <tr *ngFor="let product of pagedProducts">
                     <td>{{ product.id }}</td>
                     <td>{{ product.nombre }}</td>
                     <td class="description-cell">{{ product.descripcion }}</td>
@@ -137,7 +137,8 @@
                     &laquo;
                 </button>
 
-                <button *ngFor="let page of pages" class="pagination-btn" [class.active]="page === currentPage"
+                <button *ngFor="let page of pages"
+                    class="pagination-btn" [class.active]="page === currentPage"
                     (click)="goToPage(page)">
                     {{ page + 1 }}
                 </button>

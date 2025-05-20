@@ -25,6 +25,9 @@ export class AppComponent implements OnInit, OnDestroy {
   
   // Estado de la aplicación
   products: Product[] = [];
+  pagedProducts: Product[] = [];
+
+
   selectedProduct: Product | null = null;
   isEditing = false;
   showForm = false;
@@ -34,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   
   // Estado de la paginación
   currentPage = 0;
-  pageSize = 5;
+  pageSize = 10;
   totalElements = 0;
   totalPages = 0;
   
@@ -87,18 +90,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.productService.getProducts()
       .subscribe({
         next: (products: Product[]) => {
-          this.products = products;  // asignas directamente el arreglo
-          // Si no tienes paginación, estas variables no aplican:
-          this.totalElements = products.length; // opcional si usas
-          this.totalPages = 1;                  // opcional si usas
+          this.products = products;
+          this.totalElements = products.length;
+          this.totalPages = Math.ceil(this.totalElements / this.pageSize);
+  
+          this.setPagedProducts();  // Segmenta para paginar
           this.loading = false;
         },
-        error: (err) => {
-          this.notificationService.error(`Error al cargar productos: ${err.message}`);
-          this.loading = false;
-        }
       });
-  }
+  } 
+
+setPagedProducts(): void {
+  const start = this.currentPage * this.pageSize;
+  const end = start + this.pageSize;
+  this.pagedProducts = this.products.slice(start, end);
+}  
   
   
   openCreateForm(): void {
