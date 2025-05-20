@@ -33,12 +33,10 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll() 
                 );
             
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

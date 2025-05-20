@@ -70,6 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
   
+  
   ngOnInit(): void {
     this.loadProducts();
   }
@@ -82,13 +83,14 @@ export class AppComponent implements OnInit, OnDestroy {
   loadProducts(): void {
     this.loading = true;
     this.error = '';
-    
-    this.productService.getProducts(this.currentPage, this.pageSize)
+  
+    this.productService.getProducts()
       .subscribe({
-        next: (response: PaginatedResponse<Product>) => {
-          this.products = response.content;
-          this.totalElements = response.totalElements;
-          this.totalPages = response.totalPages;
+        next: (products: Product[]) => {
+          this.products = products;  // asignas directamente el arreglo
+          // Si no tienes paginación, estas variables no aplican:
+          this.totalElements = products.length; // opcional si usas
+          this.totalPages = 1;                  // opcional si usas
           this.loading = false;
         },
         error: (err) => {
@@ -97,6 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
   }
+  
   
   openCreateForm(): void {
     this.isEditing = false;

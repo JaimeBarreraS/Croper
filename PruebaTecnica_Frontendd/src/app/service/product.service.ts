@@ -14,14 +14,11 @@ export class ProductService {
 
     constructor(private http: HttpClient) { }
 
-    getProducts(page: number = 0, size: number = 10): Observable<PaginatedResponse<Product>> {
-        const params = new HttpParams()
-            .set('page', page.toString())
-            .set('size', size.toString());
-
-        return this.http.get<PaginatedResponse<Product>>(this.apiUrl, { params })
+    getProducts(): Observable<Product[]> {
+        return this.http.get<Product[]>(this.apiUrl)
             .pipe(catchError(this.handleError));
     }
+    
 
     getProductById(id: number): Observable<ApiResponse<Product>> {
         return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${id}`)
