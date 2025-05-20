@@ -4,6 +4,6 @@ import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
     providers: [
-        provideHttpClient(withFetch())  // Aquí es donde activas fetch()
+        provideHttpClient(withFetch()) 
     ]
 });

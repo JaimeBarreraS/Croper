@@ -1,4 +1,3 @@
-// product.service.ts
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';

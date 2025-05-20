@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/productos")
 @Tag(name = "Productos", description = "API para gestionar productos")
+//@SecurityRequirement(name = "JWT")
 public class ProductoController {
 
     private final ProductoService productoService;

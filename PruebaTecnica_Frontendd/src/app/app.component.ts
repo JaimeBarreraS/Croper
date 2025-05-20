@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // 👈 importante
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -94,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.totalElements = products.length;
           this.totalPages = Math.ceil(this.totalElements / this.pageSize);
   
-          this.setPagedProducts();  // Segmenta para paginar
+          this.setPagedProducts();
           this.loading = false;
         },
       });
